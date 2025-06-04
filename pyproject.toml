@@ -1,0 +1,13 @@
+[project]
+name = "bookcoref"
+version = "0.1.0"
+description = "BookCoref dataset for coreference resolution"
+authors = [
+    { name = "Giuliano Martinelli", email = "martinelli@diag.uniroma1.it" },
+    { name = "Tommaso Bonomo", email = "bonomo@diag.uniroma1.it" },
+    { name = "Pere-Lluís Huguet Cabot", email = "huguet@diag.uniroma1.it" },
+    { name = "Roberto Navigli", email = "navigli@diag.uniroma1.it" }
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
