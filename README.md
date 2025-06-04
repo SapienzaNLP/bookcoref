@@ -15,10 +15,27 @@
 
 
 ##  Description
-This repository contains the official code for "<span style="font-variant: small-caps;">BookCoref</span>: Coreference Resolution at Book Scale".
-
+This repository contains the evaluation scripts to evaluate Coreference Resolution models on the BookCoref Benchmark.
+We also include the official outputs of the comparison systems, which can be used to reproduce our results.
+Our silver training and gold evaluation data can be found on [Hugging Face](https://huggingface.co/datasets/sapienzanlp/bookcoref).
+<!-- (we also release wightf of berst performing model bla bla)-->
 
 ## 📚 Quickstart
+
+# Setup
+
+1. Clone the repository:
+    ```
+    git clone https://github.com/Babelscape/cner.git
+    ```
+2. Create a python environment: 
+    ```
+    conda create -n env-name python==3.9
+    ```
+3. Install the requirements:
+    ```
+    pip install -r requirements.txt
+    ```
 
 
 ## Citation
