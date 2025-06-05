@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/tommasobonomo/bookcoref_final/blob/main/assets/bookcoref.png" width="700">
+  <img src="assets/bookcoref.png" width="700">
 
 </div>
 
@@ -52,17 +52,19 @@ This repository contains the official code for "<span style="font-variant: small
 
 ```python
 {
-  doc_id: "pride_and_prejudice_142"; # (str) i.e., id of document 
-  sentences: [["Pride", "and", "Prejudice", "."], ["Begin", ...], ...]; # list(list(str))) i.e., list of word-tokenized sentences
-  clusters: [[[0,0], [3,5]],[[4,9]...], ...]; #llist(list((list(int))) i.e., list of clusters' mention offsets
-  characters: [{
-    name:"Mr.Bennet", 
-    cluster: [[0,0], ...],
+  doc_id: "pride_and_prejudice_142", # (str) i.e., id of document 
+  sentences: [["Pride", "and", "Prejudice", "."], ["Begin", ...], ...], # list(list(str))) i.e., list of word-tokenized sentences
+  clusters: [[[0,0], [3,5]],[[4,9]...], ...], #llist(list((list(int))) i.e., list of clusters' mention offsets
+  characters: [
+    {
+      name:"Mr.Bennet", 
+      cluster: [[0,0], ...],
     },
     {
       name: "Mr. Darcy",
       cluster: [[5,7], ...],
-    }]; #list(character), list of characters objects with name and his mentions offsets, i,e., dict(name:str, cluster:list(list(int)))
+    }
+  ] #list(character), list of characters objects with name and his mentions offsets, i,e., dict(name:str, cluster:list(list(int)))
 }
 ```
 
