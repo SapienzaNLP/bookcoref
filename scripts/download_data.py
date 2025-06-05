@@ -8,11 +8,11 @@ from tap import Tap
 
 class ScriptArgs(Tap):
     """
-    Script that downloads BOOKCOREF from Hugging Face in either JSONL or CoNLL format.
+    Script that downloads BOOKCOREF from HuggingFace in either JSONL or CoNLL format.
     """
     format: Literal["jsonl", "conll"] = "jsonl"  # Format of the dataset to download, either 'jsonl' or 'conll'
     test_only: bool = False  # If True, only download the test set
-    output_dir: Path = Path("data") # Default output directory for the dataset
+    output_dir: Path = Path("data/") # Default output directory for the dataset
 
     def process_args(self) -> None:
         """

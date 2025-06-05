@@ -15,83 +15,95 @@
 
 
 ##  Description
-This repository contains the official code for "<span style="font-variant: small-caps;">BookCoref</span>: Coreference Resolution at Book Scale".
+This repository contains the official code for "<span style="font-variant: small-caps;">BookCoref</span>: Coreference Resolution at Book Scale" by [Martinelli et al., 2025]().
+We include the official outputs of the comparison systems outlined in the paper, which can be used to reproduce our results.
+Our silver training and gold evaluation data can also be found on [🤗 Hugging Face](https://huggingface.co/datasets/sapienzanlp/bookcoref).
 
 
 ## Setup 
-1. Clone the repository:
-    ```
-    git clone https://github.com/sapienzanlp/bookcoref.git
-    ```
-2. Create a python environment: 
-    ```
-    conda create -n env-name python==3.9
-    conda activate env-name
-    ```
-3. Install the requirements:
-    ```
-    pip install -r requirements.txt
-    ```
+
+First of all, clone the repository: 
+```bash
+git clone https://github.com/sapienzanlp/bookcoref.git
+```
+
+We offer two ways to run the scripts in this repository: using [`uv`](https://astral.sh/uv) or manually setting up a Python environment through [`conda`](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html).
+If you opt for the manual setup, follow these steps:
+```bash
+cd bookcoref
+conda create -n bookcoref python=3.12
+conda activate bookcoref
+pip install -r requirements.txt
+```
+
+If you use `uv`, you can run the scripts directly using `uv run <script_name.py>`.
+Otherwise, you can run the scripts manually by executing: `python <script_name.py>`
 
 ## BookCoref Data 
   
 ### Local Download
-  To download the bookcoref data for training and evaluation, use 
-  ``` python 
-  donwload_data.py 
-  args:
-    -jsonl # (default) download dataset in jsonlines format.
-    -conll # download dataset in conll format
-    -test_only # download only testset (for evaluation only)
-  ```
-  This script will download data from the official repository, that can be found directly on [Huggingface](hf.co/sapienzanlp/bookcoref), in the ``` data/ ``` folder.
-  
+To download the bookcoref data for training and evaluation, run the `download_data.py` script:
+```bash
+python download_data.py 
+
+options:
+  --format <"jsonl" or "conll">, default="jsonl" # Format of the dataset to download.
+  --test_only # If specified, only download the test set
+  --output_dir <path>, default="data/" # If specified, the output directory for the dataset
+```
+
+This script will download data from [🤗 Hugging Face](https://huggingface.co/datasets/sapienzanlp/bookcoref), save it in either JSONL or CoNLL format to the default directory `data/`.
+
 ### Data format
-  BookCoref is a collection of annotated books. 
-  Each data entry contains information of one book following the traditional structure of OntoNotes:
+BookCoref is a collection of annotated books. Each item contains the annotations of one book following the structure of OntoNotes:
 
 ```python
 {
   doc_id: "pride_and_prejudice_142", # (str) i.e., id of document 
-  sentences: [["Pride", "and", "Prejudice", "."], ["Begin", ...], ...], # list(list(str))) i.e., list of word-tokenized sentences
-  clusters: [[[0,0], [3,5]],[[4,9]...], ...], #llist(list((list(int))) i.e., list of clusters' mention offsets
+  sentences: [["Pride", "and", "Prejudice", "."], ["Begin", ...], ...], # list[list[str]] i.e., list of word-tokenized sentences
+  clusters: [[[0, 0], [3, 5]],[[4, 9]...], ...], # list[list[list[int]]] i.e., list of clusters' mention offsets
   characters: [
     {
-      name:"Mr.Bennet", 
-      cluster: [[0,0], ...],
+      name: "Mr.Bennet", 
+      mentions: [[0, 0], ...],
     },
     {
       name: "Mr. Darcy",
-      cluster: [[5,7], ...],
+      mentions: [[5, 7], ...],
     }
-  ] #list(character), list of characters objects with name and his mentions offsets, i,e., dict(name:str, cluster:list(list(int)))
+  ] # list[character], list of characters objects with name and its mentions offsets, i,e., dict[name: str, mentions: list[list[int]]]
 }
 ```
 
-We also include informations on character names, which is not exploited in traditional coreference settings, but can be useful in future works.
+We also include informations on character names, which is not exploited in traditional coreference settings, but could be useful in future work.
 
 ## BookCoref Evaluation
-use the script ```evaluate.py``` to evaluate model outputs on the bookcoref benchmark.
-usage:
-```
-evaluate.py <path_to_predictions> <mode: "full", "splitted", "full-window", default="full">
 
-```
-you can indicate evaluation mode between:
+To evaluate the outputs of a model on the BookCoref benchmark, run the `evaluate.py` script:
 
-```python
-"full" # evaluate models predictions on test.jsonl, expects an input file of predictions on the full testset books. On the paper is referred as BookCoref_gold results.
-"splitted" # evaluate model predictions on test_splitted.jsonl, expects an input file of predictions on the split version of our testset books. On the paper is referred as SPLIT-BookCoref_gold results.
-"full-window" # evaluate model predictions of the full test.jsonl on test_splitted.jsonl, by splitting clusters every 1500 tokens. Expects an input file of predictions on the full testset books. On the paper is referred as BookCoref_gold-windows.
+```bash
+python scripts/evaluate.py
 
+options:
+  --predictions <path_to_predictions> # Path to the predictions file to evaluate.
+  --mode <"full", "splitted", "full-window">, default="full" # Evaluation mode.
 ```
+
+We provide three evaluation modes:
+
+| Mode | Description |
+|-------|-------------|
+| `full`| Evaluate model predictions on the full books of `test.jsonl`. <br/> *Input*: expects as input predictions on the full test set books. <br/> *Output*: scores on the full books of `test.jsonl`, referred to as BookCoref_gold results in our paper. |
+| `splitted` | Evaluate model predictions on `test_splitted.jsonl`. <br/> *Input*: expects as input predictions on the splitted version of our test set books. <br/> *Output*: scores on the splitted version (`test_splitted.jsonl`), referred to as SPLIT-BookCoref_gold results in our paper. |
+| `full-window` | Evaluate model predictions carried out on the full `test.jsonl` but evaluated on `test_splitted.jsonl`, by splitting clusters every 1500 tokens. <br/> *Input*: expects as input predictions on the full test set books. <br/> *Output*: scores on the splitted version (`test_splitted.jsonl`), referred to as BookCoref_gold-windows results in our paper. |
+
 ## Replicate Paper Results
-use the script ```evaluate.py``` to evaluate model outputs on the bookcoref benchmark.
+To replicate the results of our paper, run `scripts/evaluate.py` specifying the path to the predictions of the model you are interested in. 
+
 Example:
-```
-evaluate.py outputs/longdoc/trained_on_bookcoref/full.jsonl 
----
-CoNLL-F1: 67.0
+```bash
+$ python scripts/evaluate.py outputs/longdoc/trained_on_bookcoref/full.jsonl 
+> CoNLL-F1: 67.0
 ```
 
 ## Citation
