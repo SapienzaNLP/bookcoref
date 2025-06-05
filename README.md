@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/bookcoref.png" width="700">
+  <img src="/home/martinelli/maverick-coref/experiments/image.png" width="700">
 
 </div>
 
@@ -10,33 +10,87 @@
 [![Conference](http://img.shields.io/badge/ACL-2025-4b44ce.svg)](https://20245aclweb.org/)
 [![Paper](http://img.shields.io/badge/paper-ACL--anthology-B31B1B.svg)](https://aclanthology.org/)
 [![Hugging Face Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-FCD21D)](https://huggingface.co/collections/sapienzanlp/relik-retrieve-read-and-link-665d9e4a5c3ecba98c1bef19)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-green.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 </div>
 
 
 ##  Description
-This repository contains the evaluation scripts to evaluate Coreference Resolution models on the BookCoref Benchmark.
-We also include the official outputs of the comparison systems, which can be used to reproduce our results.
-Our silver training and gold evaluation data can be found on [Hugging Face](https://huggingface.co/datasets/sapienzanlp/bookcoref).
-<!-- (we also release wightf of berst performing model bla bla)-->
+This repository contains the official code for "<span style="font-variant: small-caps;">BookCoref</span>: Coreference Resolution at Book Scale".
 
-## 📚 Quickstart
 
-# Setup
-
+## Setup 
 1. Clone the repository:
     ```
-    git clone https://github.com/Babelscape/cner.git
+    git clone https://github.com/sapienzanlp/bookcoref.git
     ```
 2. Create a python environment: 
     ```
     conda create -n env-name python==3.9
+    conda activate env-name
     ```
 3. Install the requirements:
     ```
     pip install -r requirements.txt
     ```
 
+## BookCoref Data 
+  
+### Local Download
+  To download the bookcoref data for training and evaluation, use 
+  ``` python 
+  donwload_data.py 
+  args:
+    -jsonl # (default) download dataset in jsonlines format.
+    -conll # download dataset in conll format
+    -test_only # download only testset (for evaluation only)
+  ```
+  This script will download data from the official repository, that can be found directly on [Huggingface](hf.co/sapienzanlp/bookcoref), in the ``` data/ ``` folder.
+  
+### Data format
+  BookCoref is a collection of annotated books. 
+  Each data entry contains information of one book following the traditional structure of OntoNotes:
+
+```python
+{
+  doc_id: "pride_and_prejudice_142"; # (str) i.e., id of document 
+  sentences: [["Pride", "and", "Prejudice", "."], ["Begin", ...], ...]; # list(list(str))) i.e., list of word-tokenized sentences
+  clusters: [[[0,0], [3,5]],[[4,9]...], ...]; #llist(list((list(int))) i.e., list of clusters' mention offsets
+  characters: [{
+    name:"Mr.Bennet", 
+    cluster: [[0,0], ...],
+    },
+    {
+      name: "Mr. Darcy",
+      cluster: [[5,7], ...],
+    }]; #list(character), list of characters objects with name and his mentions offsets, i,e., dict(name:str, cluster:list(list(int)))
+}
+```
+
+We also include informations on character names, which is not exploited in traditional coreference settings, but can be useful in future works.
+
+## Evaluate model outputs on BookCoref
+use the script ```evaluate.py``` to evaluate model outputs on the bookcoref benchmark.
+usage:
+```
+evaluate.py <path_to_predictions> <mode: "full", "splitted", "full-window", default="full">
+
+```
+you can indicate evaluation mode between:
+
+```python
+"full" # evaluate models predictions on test.jsonl, expects an input file of predictions on the full testset books. On the paper is referred as BookCoref_gold results.
+"splitted" # evaluate model predictions on test_splitted.jsonl, expects an input file of predictions on the split version of our testset books. On the paper is referred as SPLIT-BookCoref_gold results.
+"full-window" # evaluate model predictions of the full test.jsonl on test_splitted.jsonl, by splitting clusters every 1500 tokens. Expects an input file of predictions on the full testset books. On the paper is referred as BookCoref_gold-windows.
+
+```
+## Replicate Paper Results
+use the script ```evaluate.py``` to evaluate model outputs on the bookcoref benchmark.
+Example:
+```
+evaluate.py outputs/longdoc/trained_on_bookcoref/full.jsonl 
+---
+CoNLL-F1: 67.0
+```
 
 ## Citation
 This work has been published at ACL 2025 (main conference). If you use any artifact, please consider citing our paper as follows:
@@ -60,3 +114,4 @@ This work has been published at ACL 2025 (main conference). If you use any artif
 ## License
 
 The data and software are licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
