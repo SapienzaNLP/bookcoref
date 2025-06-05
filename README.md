@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="/home/martinelli/maverick-coref/experiments/image.png" width="700">
+  <img src="https://github.com/tommasobonomo/bookcoref_final/blob/main/assets/bookcoref.png" width="700">
 
 </div>
 
