@@ -68,7 +68,7 @@ This repository contains the official code for "<span style="font-variant: small
 
 We also include informations on character names, which is not exploited in traditional coreference settings, but can be useful in future works.
 
-## Evaluate model outputs on BookCoref
+## BookCoref Evaluation
 use the script ```evaluate.py``` to evaluate model outputs on the bookcoref benchmark.
 usage:
 ```
