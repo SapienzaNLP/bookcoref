@@ -11,7 +11,7 @@ class ScriptArgs(Tap):
     Script that downloads BOOKCOREF from HuggingFace in either JSONL or CoNLL format.
     """
     format: Literal["jsonl", "conll"] = "jsonl"  # Format of the dataset to download, either 'jsonl' or 'conll'
-    test_only: bool = False  # If True, only download the test set
+    configuration: Literal["default", "splitted"] = "default"  # Configuration of the dataset, either 'default' or 'splitted'
     output_dir: Path = Path("data/") # Default output directory for the dataset
 
     def process_args(self) -> None:
@@ -20,7 +20,7 @@ class ScriptArgs(Tap):
         """
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-BOOKCOREF_HF_REPO = "tommasobonomo/bookcoref"
+BOOKCOREF_HF_REPO = "sapienzanlp/bookcoref"
 
 def main(args: ScriptArgs):
     """
@@ -30,26 +30,22 @@ def main(args: ScriptArgs):
     print(f"[bold green]Downloading BOOKCOREF dataset in {args.format} format...[/bold green]")
     print(f"Output directory: [bold blue]{args.output_dir}[/bold blue]")
 
-    if args.test_only:
-        print("[bold green]Downloading only `test.jsonl` and `test_splitted.jsonl`...[/bold green]")
-        dataset: DatasetDict = DatasetDict({
-            "test": load_dataset(BOOKCOREF_HF_REPO, split="test"),
-            "test_splitted": load_dataset(BOOKCOREF_HF_REPO, split="test_splitted"),
-        })
+    if args.configuration == "default":
+        dataset: DatasetDict = load_dataset(BOOKCOREF_HF_REPO)  # type: ignore
+    elif args.configuration == "splitted":
+        dataset: DatasetDict = load_dataset(BOOKCOREF_HF_REPO, "splitted")  # type: ignore
     else:
-        print("[bold green]Downloading all splits of the dataset...[/bold green]")
-        dataset: DatasetDict = load_dataset(BOOKCOREF_HF_REPO) # type: ignore
-    print(f"[bold green]Dataset loaded with splits: {list(dataset.keys())}[/bold green]")
+        raise ValueError(f"Unsupported configuration: {args.configuration}. Supported configurations are 'default' and 'splitted'.")
 
 
-    match args.format:
-        case "jsonl":
-            print("[bold green]Saving dataset in JSONL format...[/bold green]")
-            for split in dataset:
-                dataset[split].to_json(args.output_dir / f"{split}.jsonl")
-
-        case "conll":
-            raise NotImplementedError("CoNLL format is not yet implemented.")
+    if args.format == "jsonl":
+        print("[bold green]Saving dataset in JSONL format...[/bold green]")
+        for split in dataset:
+            dataset[split].to_json(args.output_dir / f"{split}.jsonl", orient="records", lines=True)
+    elif args.format == "conll":
+        raise NotImplementedError("CoNLL format is not yet implemented.")
+    else:
+        raise ValueError(f"Unsupported format: {args.format}. Supported formats are 'jsonl' and 'conll'.")
 
     print(f"[bold green]Dataset saved to[/bold green] [bold blue]{args.output_dir}[/bold blue]")
 
