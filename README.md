@@ -16,7 +16,7 @@
 
 
 ##  Description
-This repository contains the official code for "<span style="font-variant: small-caps;">BookCoref</span>: Coreference Resolution at Book Scale" by [Martinelli et al. (2025)](https://arxiv.org/abs/2507.12075).
+This repository contains the official code for the ACL main conference paper: [<span style="font-variant: small-caps;">BookCoref</span>: Coreference Resolution at Book Scale](https://arxiv.org/abs/2507.12075) (Martinelli et al., ACL 2025).
 We include the official outputs of the comparison systems outlined in the paper, which can be used to reproduce our results.
 Our silver training and gold evaluation data are available through this [🤗 Hugging Face dataset](https://huggingface.co/datasets/sapienzanlp/bookcoref).
 
@@ -33,23 +33,23 @@ Then, create a Python virtual environment and install the requirements. We suppo
 pip install -r requirements.txt
 ```
 
-## BookCoref Data 
-  
+## <span style="font-variant: small-caps;">BookCoref</span> Data
+
 ### Local Download
-To download the bookcoref data for training and evaluation, run the `download_data.py` script:
+To download the <span style="font-variant: small-caps;">BookCoref</span> data for training and evaluation, run the `download_data.py` script:
 ```bash
 python download_data.py
 
 options:
   --format <"jsonl" or "conll">, default="jsonl" # Format of the dataset to download
-  --configuration <"default" or "splitted">, default="default" # Configuration of the huggingface dataset, either 'default' or 'splitted'
+  --configuration <"default" or "split">, default="default" # Configuration of the huggingface dataset, either 'default' or 'split'
   --output_dir <path>, default="data/" # If specified, the output directory for the dataset
 ```
 
-This script will download data from [🤗 Hugging Face](https://huggingface.co/datasets/sapienzanlp/bookcoref), save it in either JSONL or CoNLL format to the default directory `data/`.
+This script will download data from [🤗 Hugging Face](https://huggingface.co/datasets/sapienzanlp/bookcoref) and save it in either JSONL or CoNLL format to the default directory `data/`.
 
 ### Data format
-BookCoref is a collection of annotated books. Each item contains the annotations of one book following the structure of OntoNotes:
+<span style="font-variant: small-caps;">BookCoref</span> is a collection of annotated books. Each item contains the annotations of one book following the structure of OntoNotes:
 
 ```python
 {
@@ -72,25 +72,25 @@ BookCoref is a collection of annotated books. Each item contains the annotations
 
 We also include informations on character names, which is not exploited in traditional coreference settings, but could be useful in future work.
 
-## BookCoref Evaluation
+## <span style="font-variant: small-caps;">BookCoref</span> Evaluation
 
-To evaluate the outputs of a model on the BookCoref benchmark, run the `evaluate.py` script:
+To evaluate the outputs of a model on the <span style="font-variant: small-caps;">BookCoref</span> benchmark, run the `evaluate.py` script:
 
 ```bash
 python evaluate.py
 
 options:
   --predictions <path_to_predictions> # Path to the predictions file to evaluate.
-  --mode <"full", "splitted", "gold_window">, default="full" # Evaluation mode.
+  --mode <"full", "split", "gold_window">, default="full" # Evaluation mode.
 ```
 
 We provide three evaluation modes:
 
 | Mode | Description |
 |-------|-------------|
-| `full`| Evaluate model predictions on the full books of `test.jsonl`. <br/> *Input*: expects as input predictions on the full test set books. <br/> *Output*: scores on the full books of `test.jsonl`, referred to as BookCoref_gold results in our paper. |
-| `splitted` | Evaluate model predictions on `test_splitted.jsonl`. <br/> *Input*: expects as input predictions on the splitted version of our test set books. <br/> *Output*: scores on the splitted version (`test_splitted.jsonl`), referred to as SPLIT-BookCoref_gold results in our paper. |
-| `gold_window` | Evaluate model predictions carried out on the full `test.jsonl` but evaluated on `test_splitted.jsonl`, by splitting clusters every 1500 tokens. <br/> *Input*: expects as input predictions on the full test set books. <br/> *Output*: scores on the splitted version (`test_splitted.jsonl`), referred to as BookCoref_gold-windows results in our paper. |
+| `full`| Evaluate model predictions on the full books of `test.jsonl`. <br/> *Input*: expects as input predictions on the full test set books. <br/> *Output*: scores on the full books of `test.jsonl`, referred to as <span style="font-variant: small-caps;">BookCoref</span><sub>gold</sub> results in our paper. |
+| `split` | Evaluate model predictions on `test_split.jsonl`. <br/> *Input*: expects as input predictions on the split version of our test set books. <br/> *Output*: scores on the split version (`test_split.jsonl`), referred to as <span style="font-variant: small-caps;">Split-BookCoref</span><sub>gold</sub> results in our paper. |
+| `gold_window` | Evaluate model predictions carried out on the full `test.jsonl` but evaluated on `test_split.jsonl`, by splitting clusters every 1500 tokens. <br/> *Input*: expects as input predictions on the full test set books. <br/> *Output*: scores on the split version (`test_split.jsonl`), referred to as <span style="font-variant: small-caps;">BookCoref</span><sub>gold+window</sub> results in our paper. |
 
 ## Replicate Paper Results
 To replicate the results of our paper, run `evaluate.py` specifying the path to the predictions of the model you are interested in. 
@@ -118,11 +118,11 @@ conll2012:
 ```
 
 ## Citation
-This work has been published at ACL 2025 (main conference). If you use any artifact, please consider citing our paper as follows:
+This work has been published at ACL 2025 (main conference). If you use any artifact, please cite our paper as follows:
 
 ```bibtex
 @inproceedings{martinelli-etal-2025-bookcoref,
-    title = "{BookCoref}: Coreference Resolution at Book Scale",
+    title = "{BOOKCOREF}: Coreference Resolution at Book Scale",
     author = "Martinelli, Giuliano  and
       Bonomo, Tommaso  and
       Huguet Cabot, Pere-Llu{\'\i}s  and

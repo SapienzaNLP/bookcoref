@@ -15,16 +15,16 @@ class ScriptArgs(Tap):
     """
 
     predictions: Path  # Path to the predictions file in JSONL format
-    mode: Literal["full", "splitted", "gold_window"] = "full"  # Mode of evaluation as explained in the paper
+    mode: Literal["full", "split", "gold_window"] = "full"  # Mode of evaluation as explained in the paper
 
 
 def main(args):
     if args.mode == "full" or args.mode == "gold_window":
         bookcoref: DatasetDict = load_dataset("sapienzanlp/bookcoref")  # type: ignore
-    elif args.mode == "splitted":
-        bookcoref: DatasetDict = load_dataset("sapienzanlp/bookcoref", "splitted")  # type: ignore
+    elif args.mode == "split":
+        bookcoref: DatasetDict = load_dataset("sapienzanlp/bookcoref", "split")  # type: ignore
     else:
-        raise ValueError(f"Unsupported mode: {args.mode}. Supported modes are 'full', 'splitted' and 'gold_window'.")
+        raise ValueError(f"Unsupported mode: {args.mode}. Supported modes are 'full', 'split' and 'gold_window'.")
 
     gold = bookcoref["test"].to_list()
 
@@ -34,7 +34,7 @@ def main(args):
             predicted.append(json.loads(elem))
 
     if args.mode == "gold_window":
-        evaluate_splitted(gold, predicted, length=1500)
+        evaluate_split(gold, predicted, length=1500)
     else:
         evaluate(gold, predicted)
 
@@ -87,8 +87,8 @@ def extract_mentions_to_clusters(gold_clusters):
     return mention_to_gold
 
 
-def evaluate_splitted(gold_elements_list, predicted_elements_list, length):
-    """Evaluates full predictions on splitted BOOKCOREF test set."""
+def evaluate_split(gold_elements_list, predicted_elements_list, length):
+    """Evaluates full predictions on split BOOKCOREF test set."""
     results = {}
     gold = []
     predictions = []

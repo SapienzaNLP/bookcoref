@@ -10,9 +10,10 @@ class ScriptArgs(Tap):
     """
     Script that downloads BOOKCOREF from HuggingFace in either JSONL or CoNLL format.
     """
+
     format: Literal["jsonl", "conll"] = "jsonl"  # Format of the dataset to download, either 'jsonl' or 'conll'
-    configuration: Literal["default", "splitted"] = "default"  # Configuration of the dataset, either 'default' or 'splitted'
-    output_dir: Path = Path("data/") # Default output directory for the dataset
+    configuration: Literal["default", "split"] = "default"  # Configuration of the dataset, either 'default' or 'split'
+    output_dir: Path = Path("data/")  # Default output directory for the dataset
 
     def process_args(self) -> None:
         """
@@ -20,7 +21,9 @@ class ScriptArgs(Tap):
         """
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
+
 BOOKCOREF_HF_REPO = "sapienzanlp/bookcoref"
+
 
 def main(args: ScriptArgs):
     """
@@ -32,11 +35,12 @@ def main(args: ScriptArgs):
 
     if args.configuration == "default":
         dataset: DatasetDict = load_dataset(BOOKCOREF_HF_REPO)  # type: ignore
-    elif args.configuration == "splitted":
-        dataset: DatasetDict = load_dataset(BOOKCOREF_HF_REPO, "splitted")  # type: ignore
+    elif args.configuration == "split":
+        dataset: DatasetDict = load_dataset(BOOKCOREF_HF_REPO, "split")  # type: ignore
     else:
-        raise ValueError(f"Unsupported configuration: {args.configuration}. Supported configurations are 'default' and 'splitted'.")
-
+        raise ValueError(
+            f"Unsupported configuration: {args.configuration}. Supported configurations are 'default' and 'split'."
+        )
 
     if args.format == "jsonl":
         print("[bold green]Saving dataset in JSONL format...[/bold green]")
@@ -48,6 +52,7 @@ def main(args: ScriptArgs):
         raise ValueError(f"Unsupported format: {args.format}. Supported formats are 'jsonl' and 'conll'.")
 
     print(f"[bold green]Dataset saved to[/bold green] [bold blue]{args.output_dir}[/bold blue]")
+
 
 if __name__ == "__main__":
     args = ScriptArgs().parse_args()
