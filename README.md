@@ -16,7 +16,7 @@
 
 
 ##  Description
-This repository contains the official code for the ACL 2025 main conference paper: [<span style="font-variant: small-caps;">BookCoref</span>: Coreference Resolution at Book Scale](https://arxiv.org/abs/2507.12075).
+This repository contains the official code for the ACL 2025 main conference paper: [<span style="font-variant: small-caps;">BookCoref</span>: Coreference Resolution at Book Scale](https://arxiv.org/abs/2507.12075) by G. Martinelli, T. Bonomo, P. Huguet Cabot and R. Navigli.
 We include the official outputs of the comparison systems outlined in the paper, which can be used to reproduce our results.
 Our silver training and gold evaluation data are available through this [🤗 Hugging Face dataset](https://huggingface.co/datasets/sapienzanlp/bookcoref).
 This work was conducted by [Giuliano Martinelli](https://www.linkedin.com/in/giuliano-martinelli-20a9b2193/), [Tommaso Bonomo](https://www.linkedin.com/in/tommaso-bonomo/), [Pere-lluìs Huguet Cabot](https://www.linkedin.com/in/perelluis/) and [Roberto Navigli](https://www.linkedin.com/in/robertonavigli/).
