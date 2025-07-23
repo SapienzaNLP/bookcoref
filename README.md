@@ -8,7 +8,7 @@
 
 
 [![Conference](http://img.shields.io/badge/ACL-2025-4b44ce.svg)](https://2025.aclweb.org/)
-[![Paper](http://img.shields.io/badge/paper-ACL--anthology-B31B1B.svg)](https://aclanthology.org/)
+[![Paper](http://img.shields.io/badge/paper-ACL--anthology-B31B1B.svg)]([https://aclanthology.org/](https://aclanthology.org/2025.acl-long.1197.pdf))
 [![arXiv](https://img.shields.io/badge/arXiv-2507.12075-008080.svg)](https://arxiv.org/abs/2507.12075)
 [![Hugging Face Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-FCD21D)](https://huggingface.co/collections/sapienzanlp/relik-retrieve-read-and-link-665d9e4a5c3ecba98c1bef19)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-green.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
@@ -124,14 +124,21 @@ This work has been published at ACL 2025 (main conference). If you use any artif
     title = "{BOOKCOREF}: Coreference Resolution at Book Scale",
     author = "Martinelli, Giuliano  and
       Bonomo, Tommaso  and
-      Huguet Cabot, Pere-Llu{\'\i}s  and
+      Huguet Cabot, Pere-Llu{\'i}s  and
       Navigli, Roberto",
-    booktitle = "Proceedings of the 63nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    editor = "Che, Wanxiang  and
+      Nabende, Joyce  and
+      Shutova, Ekaterina  and
+      Pilehvar, Mohammad Taher",
+    booktitle = "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
     month = jul,
     year = "2025",
     address = "Vienna, Austria",
     publisher = "Association for Computational Linguistics",
-}
+    url = "https://aclanthology.org/2025.acl-long.1197/",
+    pages = "24526--24544",
+    ISBN = "979-8-89176-251-0",
+    }
 ```
 
 
